@@ -1,5 +1,5 @@
 # ---- builder ----
-FROM gradle:8.10-jdk17 AS builder
+FROM gradle:8.14.3-jdk21 AS builder
 WORKDIR /app
 
 COPY gradlew ./
