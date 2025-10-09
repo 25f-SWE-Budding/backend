@@ -3,7 +3,7 @@ FROM gradle:8.10-jdk17 AS builder
 WORKDIR /app
 COPY gradlew ./
 COPY gradle gradle
-COPY build.gradle settings.gradle.kts gradle.properties ./
+COPY build.gradle.kts settings.gradle.kts gradle.properties ./
 # 의존성 캐시 레이어
 RUN ./gradlew --no-daemon dependencies || true
 # 소스는 나중에
