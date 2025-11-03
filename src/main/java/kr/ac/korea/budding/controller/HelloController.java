@@ -1,6 +1,6 @@
-package kr.ac.korea.sweteam6.controller;
+package kr.ac.korea.budding.controller;
 
-import kr.ac.korea.sweteam6.service.HelloService;
+import kr.ac.korea.budding.service.HelloService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

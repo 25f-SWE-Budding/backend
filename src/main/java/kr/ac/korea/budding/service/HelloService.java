@@ -1,4 +1,4 @@
-package kr.ac.korea.sweteam6.service;
+package kr.ac.korea.budding.service;
 
 import org.springframework.stereotype.Service;
 

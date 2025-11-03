@@ -1,13 +1,13 @@
-package kr.ac.korea.sweteam6;
+package kr.ac.korea.budding;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SweTeam6Application {
+public class BuddingApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SweTeam6Application.class, args);
+        SpringApplication.run(BuddingApplication.class, args);
     }
 
 }

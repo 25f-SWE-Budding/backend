@@ -1,1 +1,1 @@
-rootProject.name = "SWE-Team6"
+rootProject.name = "Budding"
