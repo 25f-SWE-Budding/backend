@@ -7,7 +7,7 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "schedules")
+@Table(name = "challenges")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
