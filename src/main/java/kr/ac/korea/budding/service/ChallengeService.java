@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import kr.ac.korea.budding.dto.ChallengeRequestDto;
 import kr.ac.korea.budding.dto.ChallengeResponseDto;
 import kr.ac.korea.budding.entity.ChallengeEntity;
+import kr.ac.korea.budding.mapper.ChallengeMapper;
 import kr.ac.korea.budding.repository.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,27 +14,14 @@ import org.springframework.stereotype.Service;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
+    private final ChallengeMapper challengeMapper;
 
     @Transactional
     public ChallengeResponseDto createSchedule(ChallengeRequestDto req) {
-        ChallengeEntity entity = ChallengeEntity.builder()
-                .name(req.getName())
-                .category(req.getCategory())
-                .startDate(req.getStartDate())
-                .endDate(req.getEndDate())
-                .targetCount(req.getTargetCount())
-                .currentCertCount(req.getCurrentCertCount())
-                .build();
+        ChallengeEntity challenge = challengeMapper.toEntity(req);
 
-        challengeRepository.save(entity);
-        return ChallengeResponseDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .startDate(entity.getStartDate())
-                .endDate(entity.getEndDate())
-                .targetCount(entity.getTargetCount())
-                .currentCertCount(entity.getCurrentCertCount())
-                .build();
+        challengeRepository.save(challenge);
 
+        return challengeMapper.toDto(challenge);
     }
 }

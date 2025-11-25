@@ -13,9 +13,15 @@ import lombok.*;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
+
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(nullable = false)
+    private String pw;
+
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Column(nullable = false)
@@ -23,4 +29,8 @@ public class UserEntity {
 
     @Column(nullable = false)
     private Boolean dailyCheckInStatus;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "avatar_id", nullable = false)
+    private AvatarEntity avatar;
 }

@@ -16,10 +16,10 @@ public class ChallengeRequestDto {
     @Schema(example="운동")
     private String category;
 
-    @Schema(example="2024-11-05")
+    @Schema(example="2026-01-01")
     private Date startDate;
 
-    @Schema(example="2024-11-26")
+    @Schema(example="2026-01-15")
     private Date endDate;
 
     @Schema(example="9")
