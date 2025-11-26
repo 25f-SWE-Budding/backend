@@ -29,13 +29,16 @@ public class FriendshipService {
     @Transactional
     public FriendshipResponseDto createFriendship(Integer user1_id, Integer user2_id) {
 
+        // 유저 번호 정렬, user1_id < user2_id
         Integer minId = Math.min(user1_id, user2_id);
         Integer maxId = Math.max(user1_id, user2_id);
 
+        // 자기 자신과는 친구 추가 불가
         if (minId.equals(maxId)) {
             throw new RuntimeException(String.format("cannot create friendship with yourself, id %d", minId));
         }
 
+        // 이미 친구인지 확인
         FriendshipEntity check = friendshipRepository.findByUser1IdAndUser2Id(minId, maxId);
         if (check != null) {
             throw new RuntimeException(String.format("Friendship with id %d and id %d already exists", minId, maxId));

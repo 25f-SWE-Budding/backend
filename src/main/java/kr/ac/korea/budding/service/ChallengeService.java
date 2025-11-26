@@ -31,7 +31,7 @@ public class ChallengeService {
     @Transactional
     public ChallengeResponseDto createChallenge(ChallengeRequestDto req, Integer userId) {
         UserEntity user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException(String.format("user id: %d not found", userId))
+            .orElseThrow(() -> new RuntimeException(String.format("user with id: %d not found", userId))
         );
 
         ChallengeEntity challenge = challengeMapper.toEntity(req);
@@ -54,7 +54,7 @@ public class ChallengeService {
     @Transactional
     public List<ChallengeResponseDto> getMyChallenges(Integer userId, ParticipationStatus status) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(String.format("user id: %d not found", userId))
+                .orElseThrow(() -> new RuntimeException(String.format("user with id: %d not found", userId))
         );
 
         List<ParticipationEntity> participations = participationRepository.findByUserIdAndStatus(userId, status);

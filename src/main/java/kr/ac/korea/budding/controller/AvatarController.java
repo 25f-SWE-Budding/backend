@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/avatar")
+@RequestMapping("/avatars")
 public class AvatarController {
 
     private final AvatarService avatarService;

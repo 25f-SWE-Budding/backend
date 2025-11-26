@@ -10,12 +10,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/friendship")
+@RequestMapping("/friendships")
 public class FriendshipController {
 
     private final FriendshipService friendshipService;
 
-    @PostMapping("/create")
+    @PostMapping("")
     public FriendshipResponseDto createFriendship(
             @RequestParam Integer user1_id,
             @RequestParam Integer user2_id
@@ -23,9 +23,9 @@ public class FriendshipController {
         return friendshipService.createFriendship(user1_id, user2_id);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/{userId}")
     public List<UserResponseDto> findMyFriends(
-            @RequestParam Integer userId
+            @PathVariable Integer userId
     ) {
         return friendshipService.findMyFriends(userId);
     }
