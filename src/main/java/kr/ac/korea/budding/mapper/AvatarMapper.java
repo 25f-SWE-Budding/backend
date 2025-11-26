@@ -3,7 +3,6 @@ package kr.ac.korea.budding.mapper;
 import kr.ac.korea.budding.dto.AvatarResponseDto;
 import kr.ac.korea.budding.entity.AvatarEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -13,5 +12,5 @@ public interface AvatarMapper {
     AvatarResponseDto toDto(AvatarEntity entity);
 
     // List 객체 매핑
-    List<AvatarResponseDto> toDtoList(List<AvatarEntity> entities);
+    List<AvatarResponseDto> toDto(List<AvatarEntity> entities);
 }

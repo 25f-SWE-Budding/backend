@@ -12,7 +12,7 @@ public interface ChallengeMapper {
 
     ChallengeResponseDto toDto(ChallengeEntity challenge);
 
-    List<ChallengeResponseDto> toDtoList(List<ChallengeEntity> challenges);
+    List<ChallengeResponseDto> toDto(List<ChallengeEntity> challenges);
 
     ChallengeEntity toEntity(ChallengeRequestDto challenge);
 }
