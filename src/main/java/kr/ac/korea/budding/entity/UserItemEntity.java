@@ -21,7 +21,4 @@ public class UserItemEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ItemEntity item;
-
-    // 착용 중인지
-    private Boolean equipped;
 }

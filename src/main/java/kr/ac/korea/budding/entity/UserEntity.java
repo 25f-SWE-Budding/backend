@@ -27,9 +27,6 @@ public class UserEntity {
     @Column(nullable = false)
     private Integer points;
 
-    @Column(nullable = false)
-    private Boolean dailyCheckInStatus;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "avatar_id", nullable = false)
     private AvatarEntity avatar;

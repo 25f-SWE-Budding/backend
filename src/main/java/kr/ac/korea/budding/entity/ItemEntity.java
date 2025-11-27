@@ -22,7 +22,7 @@ public class ItemEntity {
     @Column(nullable = false)
     private ItemSlots slot;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     private Integer price;

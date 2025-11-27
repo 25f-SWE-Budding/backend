@@ -86,7 +86,6 @@ public class ItemService {
             UserItemEntity userItem = new UserItemEntity();
             userItem.setUser(user);
             userItem.setItem(item);
-            userItem.setEquipped(false);
             userItemRepository.save(userItem);
 
             return itemMapper.toDto(item);

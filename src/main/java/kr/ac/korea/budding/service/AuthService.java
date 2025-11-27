@@ -21,14 +21,8 @@ public class AuthService {
     @Transactional
     public UserResponseDto register(RegisterDto req) {
 
-        // 기본 아바타로 설정
-        AvatarEntity default_avatar = AvatarEntity.builder()
-                .hat("default_hat")
-                .eyewear("default_eyewear")
-                .top("default_top")
-                .bottom("default_bottom")
-                .shoes("default_shoes")
-                .build();
+        // 기본 아바타로 설정(item은 null)
+        AvatarEntity default_avatar = AvatarEntity.builder().build();
 
         // 유저 객체 만들기
         UserEntity user = UserEntity.builder()
@@ -36,7 +30,6 @@ public class AuthService {
                 .pw(req.getPw())
                 .nickname(req.getNickname())
                 .points(0)
-                .dailyCheckInStatus(false)
                 .avatar(default_avatar)
                 .build();
 

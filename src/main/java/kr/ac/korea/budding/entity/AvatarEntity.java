@@ -15,18 +15,23 @@ public class AvatarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String hat;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hat_id")
+    private ItemEntity hat;
 
-    @Column
-    private String eyewear;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "eyewear_id")
+    private ItemEntity eyewear;
 
-    @Column
-    private String top;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "top_id")
+    private ItemEntity top;
 
-    @Column
-    private String bottom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bottom_id")
+    private ItemEntity bottom;
 
-    @Column
-    private String shoes;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shoes_id")
+    private ItemEntity shoes;
 }
