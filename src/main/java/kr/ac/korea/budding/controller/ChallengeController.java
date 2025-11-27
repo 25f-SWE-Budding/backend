@@ -1,6 +1,7 @@
 package kr.ac.korea.budding.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.ac.korea.budding.dto.CertificationChallengeResponseDto;
 import kr.ac.korea.budding.dto.ChallengeRequestDto;
 import kr.ac.korea.budding.dto.ChallengeResponseDto;
 import kr.ac.korea.budding.enums.ParticipationStatus;
@@ -8,7 +9,9 @@ import kr.ac.korea.budding.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -35,5 +38,19 @@ public class ChallengeController {
     ) {
 
         return challengeService.getMyChallenges(userId, status);
+    }
+
+    @PostMapping(
+            value = "/{challengeId}/certifications",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    @Operation(summary = "인증 사진 업로드")
+    public CertificationChallengeResponseDto certificationChallenge(
+            @RequestParam Long userId,
+            @PathVariable Long challengeId,
+            @RequestPart("image") MultipartFile image,
+            @RequestParam(value = "memo",  required = false) String memo
+    ) {
+        return challengeService.certificationChallenge(userId, challengeId, image, memo);
     }
 }

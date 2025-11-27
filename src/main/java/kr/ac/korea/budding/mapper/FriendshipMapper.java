@@ -11,10 +11,8 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface FriendshipMapper {
 
-    @Mappings({
-            @Mapping(target="user1Id", source="user1.id"),
-            @Mapping(target="user2Id", source="user2.id")
-    })
+    @Mapping(source="user1.id", target="user1Id")
+    @Mapping(source="user2.id", target="user2Id")
     FriendshipResponseDto toDto(FriendshipEntity friendship);
 
     List<FriendshipResponseDto> toDto(List<FriendshipEntity> friendships);
