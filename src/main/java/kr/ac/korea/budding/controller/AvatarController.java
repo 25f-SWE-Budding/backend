@@ -16,13 +16,13 @@ public class AvatarController {
     private final AvatarService avatarService;
 
     @PostMapping("/{userId}/setAvatar")
-    @Operation(summary = "내 아바타 설정하기, items랑 좀 꼬였어서 로직 변경 예정")
+    @Operation(summary = "내 아바타 설정하기")
     public AvatarResponseDto setAvatar(@PathVariable Long userId, @RequestBody AvatarRequestDto dto) {
         return avatarService.setAvatar(userId, dto);
     }
 
     @GetMapping("/{userId}/getAvatar")
-    @Operation(summary = "내 아바타 확인하기, items랑 좀 꼬였어서 로직 변경 예정")
+    @Operation(summary = "내 아바타 확인하기")
     public AvatarResponseDto getAvatar(@PathVariable Long userId) {
         return avatarService.getAvatarByUserId(userId);
     }

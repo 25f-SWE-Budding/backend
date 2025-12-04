@@ -30,10 +30,14 @@ public class ChallengeEntity {
     @Column(nullable = false)
     private Date endDate;
 
-    @Column(nullable = false)
-    private Integer targetCount;
+//    @Column(nullable = false)
+//    private Integer targetCount;
+//
+//    @Column(nullable = false)
+//    private Integer currentCertCount;
 
-    @Column(nullable = false)
-    private Integer currentCertCount;
+    private String rewardName;
+
+    private String rewardUrl;
 
 }

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import kr.ac.korea.budding.dto.CertificationChallengeResponseDto;
 import kr.ac.korea.budding.dto.ChallengeRequestDto;
 import kr.ac.korea.budding.dto.ChallengeResponseDto;
+import kr.ac.korea.budding.dto.ParticipantResponseDto;
 import kr.ac.korea.budding.enums.ParticipationStatus;
 import kr.ac.korea.budding.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +53,25 @@ public class ChallengeController {
             @RequestParam(value = "memo",  required = false) String memo
     ) {
         return challengeService.certificationChallenge(userId, challengeId, image, memo);
+    }
+
+    @GetMapping(
+            value = "/{challengeId}/participants/count"
+    )
+    @Operation(summary = "챌린지 참가자 수")
+    public Long countChallengeParticipants(
+            @PathVariable Long challengeId
+    ) {
+        return challengeService.countChallengeParticipants(challengeId);
+    }
+
+    @GetMapping(
+            value = "{challengeId}/participants/list"
+    )
+    @Operation(summary = "챌린지 참가자 리스트(id, nickname)")
+    public List<ParticipantResponseDto> getChallengeParticipants(
+            @PathVariable Long challengeId
+    ) {
+        return challengeService.getChallengeParticipants(challengeId);
     }
 }

@@ -1,7 +1,7 @@
 package kr.ac.korea.budding.service;
 
-import jakarta.transaction.Transactional;
-import kr.ac.korea.budding.dto.CertificationChallengeRequestDto;
+import kr.ac.korea.budding.dto.ParticipantResponseDto;
+import org.springframework.transaction.annotation.Transactional;
 import kr.ac.korea.budding.dto.CertificationChallengeResponseDto;
 import kr.ac.korea.budding.dto.ChallengeRequestDto;
 import kr.ac.korea.budding.dto.ChallengeResponseDto;
@@ -112,4 +112,24 @@ public class ChallengeService {
         return certificationChallengeMapper.toDto(certification);
     }
 
+    // 챌린지의 인원 수 확인
+    @Transactional(readOnly = true)
+    public Long countChallengeParticipants(Long challengeId){
+
+        return participationRepository.countByChallenge_Id(challengeId);
+    }
+
+    // 챌린지 참가자 확인
+    @Transactional
+    public List<ParticipantResponseDto> getChallengeParticipants(Long challengeId){
+
+        List<ParticipationEntity> participations = participationRepository.findAllByChallenge_Id(challengeId);
+
+        return participations.stream()
+                .map(p -> new ParticipantResponseDto(
+                        p.getUser().getId(),
+                        p.getUser().getNickname()
+                ))
+                .toList();
+    }
 }

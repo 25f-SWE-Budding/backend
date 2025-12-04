@@ -21,9 +21,6 @@ public class SupabaseStorageUtil {
     @Value("${supabase.key}")
     private String supabaseKey;
 
-    @Value("${supabase.bucket}")
-    private String bucketName;
-
     private final WebClient webClient = WebClient.builder().build();
 
 
@@ -32,7 +29,7 @@ public class SupabaseStorageUtil {
         try {
             byte[] bytes = file.getBytes();
 
-            String url = String.format("%s/storage/v1/object/%s/%s", supabaseUrl, bucketName, path);
+            String url = String.format("%s/storage/v1/object/%s", supabaseUrl, path);
 
             webClient.put()
                     .uri(url)

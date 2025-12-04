@@ -15,6 +15,9 @@ public class ChallengeResponseDto {
     private String category;
     private Date startDate;
     private Date endDate;
-    private Integer targetCount;
-    private Integer currentCertCount;
+//    private Integer targetCount;
+//    private Integer currentCertCount;
+    private String rewardName;
+    private String rewardUrl;
+    private Integer participants;
 }
