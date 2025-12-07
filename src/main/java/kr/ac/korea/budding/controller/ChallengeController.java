@@ -1,10 +1,7 @@
 package kr.ac.korea.budding.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kr.ac.korea.budding.dto.CertificationChallengeResponseDto;
-import kr.ac.korea.budding.dto.ChallengeRequestDto;
-import kr.ac.korea.budding.dto.ChallengeResponseDto;
-import kr.ac.korea.budding.dto.ParticipantResponseDto;
+import kr.ac.korea.budding.dto.*;
 import kr.ac.korea.budding.enums.ParticipationStatus;
 import kr.ac.korea.budding.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +28,7 @@ public class ChallengeController {
         return challengeService.createChallenge(challengeRequestDto, userId);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     @Operation(summary = "내가 진행 중인 챌린지들 확인하기")
     public List<ChallengeResponseDto> getMyChallenges(
             @PathVariable Long userId,
@@ -42,13 +39,13 @@ public class ChallengeController {
     }
 
     @PostMapping(
-            value = "/{challengeId}/certifications",
+            value = "/{challengeId}/users/{userId}/certifications",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     @Operation(summary = "인증 사진 업로드")
     public CertificationChallengeResponseDto certificationChallenge(
-            @RequestParam Long userId,
             @PathVariable Long challengeId,
+            @PathVariable Long userId,
             @RequestPart("image") MultipartFile image,
             @RequestParam(value = "memo",  required = false) String memo
     ) {
@@ -66,12 +63,23 @@ public class ChallengeController {
     }
 
     @GetMapping(
-            value = "{challengeId}/participants/list"
+            value = "/{challengeId}/participants"
     )
     @Operation(summary = "챌린지 참가자 리스트(id, nickname)")
     public List<ParticipantResponseDto> getChallengeParticipants(
             @PathVariable Long challengeId
     ) {
         return challengeService.getChallengeParticipants(challengeId);
+    }
+
+    @GetMapping(
+            value = "/users/{userId}/challenges/{challengeId}"
+    )
+    @Operation(summary = "유저의 챌린지 1개 상세보기")
+    public ChallengeDetailResponseDto getChallengeDetailByUser(
+            @PathVariable Long userId,
+            @PathVariable Long challengeId
+    ) {
+        return challengeService.getChallengeDetailByUser(userId, challengeId);
     }
 }

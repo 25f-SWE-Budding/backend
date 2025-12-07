@@ -30,5 +30,4 @@ public class ParticipationEntity {
 
     @Enumerated
     private ParticipationStatus status;
-
 }

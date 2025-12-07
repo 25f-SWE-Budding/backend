@@ -3,6 +3,7 @@ package kr.ac.korea.budding.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -25,19 +26,19 @@ public class ChallengeEntity {
     private String category;
 
     @Column(nullable = false)
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private Date endDate;
+    private LocalDate endDate;
 
-//    @Column(nullable = false)
-//    private Integer targetCount;
-//
-//    @Column(nullable = false)
-//    private Integer currentCertCount;
+    @Column(nullable = false)
+    private Long targetCount;    // 전체 횟수
 
     private String rewardName;
 
     private String rewardUrl;
 
+    private String goal;    // 챌린지 목표 설명
+
+    private String notion;  // 메모
 }

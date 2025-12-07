@@ -1,10 +1,8 @@
 package kr.ac.korea.budding.service;
 
-import kr.ac.korea.budding.dto.ParticipantResponseDto;
+import kr.ac.korea.budding.dto.*;
+import kr.ac.korea.budding.repository.*;
 import org.springframework.transaction.annotation.Transactional;
-import kr.ac.korea.budding.dto.CertificationChallengeResponseDto;
-import kr.ac.korea.budding.dto.ChallengeRequestDto;
-import kr.ac.korea.budding.dto.ChallengeResponseDto;
 import kr.ac.korea.budding.entity.CertificationChallengeEntity;
 import kr.ac.korea.budding.entity.ChallengeEntity;
 import kr.ac.korea.budding.entity.ParticipationEntity;
@@ -12,10 +10,6 @@ import kr.ac.korea.budding.entity.UserEntity;
 import kr.ac.korea.budding.enums.ParticipationStatus;
 import kr.ac.korea.budding.mapper.CertificationChallengeMapper;
 import kr.ac.korea.budding.mapper.ChallengeMapper;
-import kr.ac.korea.budding.repository.CertificationChallengeRepository;
-import kr.ac.korea.budding.repository.ChallengeRepository;
-import kr.ac.korea.budding.repository.ParticipationRepository;
-import kr.ac.korea.budding.repository.UserRepository;
 import kr.ac.korea.budding.utils.SupabaseStorageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +28,7 @@ public class ChallengeService {
     private final ChallengeMapper challengeMapper;
     private final ParticipationRepository participationRepository;
     private final UserRepository userRepository;
+    private final ChallengeCheckInRepository challengeCheckInRepository;
 
     private final CertificationChallengeRepository certificationChallengeRepository;
     private final SupabaseStorageUtil supabaseStorageUtil;
@@ -142,5 +137,58 @@ public class ChallengeService {
                         p.getUser().getNickname()
                 ))
                 .toList();
+    }
+
+    // 유저별 챌린지 상세정보
+    @Transactional(readOnly = true)
+    public ChallengeDetailResponseDto getChallengeDetailByUser(Long challengeId, Long userId){
+        ChallengeEntity challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new RuntimeException("Challenge not found: " + challengeId));
+
+        LocalDate today = LocalDate.now();
+        LocalDate start = challenge.getStartDate();
+        LocalDate end = challenge.getEndDate();
+
+        LocalDate endForCount = today.isAfter(end) ? end : today;
+
+        long succeedDays = challengeCheckInRepository
+                .countByChallengeIdAndUserIdAndDateBetween(
+                        challengeId,
+                        userId,
+                        start,
+                        endForCount
+                );
+
+        long leftDays = challenge.getTargetCount() - succeedDays;
+
+        // 참여자 목록
+        List<ParticipationEntity> participations =
+                participationRepository.findByChallengeIdAndStatus(challengeId, ParticipationStatus.ACTIVE);
+
+        List<ChallengeDetailResponseDto.participantDto> participants = participations.stream()
+                .map(p -> {
+                    UserEntity u = p.getUser();
+                    return ChallengeDetailResponseDto.participantDto.builder()
+                            .id(u.getId())
+                            .Nickname(u.getNickname())
+                            .avatarId(u.getAvatar().getId())
+                            .build();
+                })
+                .toList();
+
+        return ChallengeDetailResponseDto.builder()
+                .id(challenge.getId())
+                .name(challenge.getName())
+                .category(challenge.getCategory())
+                .startDate(start)
+                .endDate(end)
+                .rewardName(challenge.getRewardName())
+                .participants(participants)
+                .succeedDays(succeedDays)
+                .leftDays(leftDays)
+                .goal(challenge.getGoal())
+                .notion(challenge.getNotion())
+                .build();
+
     }
 }

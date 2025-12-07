@@ -23,15 +23,18 @@ public class ChallengeRequestDto {
     @Schema(example="2026-01-15")
     private Date endDate;
 
-//    @Schema(example="9")
-//    private Integer targetCount;
-//
-//    @Schema(example="1")
-//    private Integer currentCertCount;
+    @Schema(example="6")
+    private Integer targetCount;
 
     @Schema(example = "로봇 청소기")
     private String rewardName;
 
     @Schema(example = "robot_vacuum_ex_url")
     private String rewardUrl;
+
+    @Schema(example = "운동을 열심히 합시다")
+    private String goal;
+
+    @Schema(example = "메모를 작성해요")
+    private String notion;
 }
