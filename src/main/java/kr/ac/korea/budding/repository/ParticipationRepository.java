@@ -21,4 +21,6 @@ public interface ParticipationRepository extends JpaRepository<ParticipationEnti
     Long countByChallenge_Id(Long challengeId);
 
     List<ParticipationEntity> findAllByChallenge_Id(Long challengeId);
+
+    long countByChallengeId(Long challengeId);
 }

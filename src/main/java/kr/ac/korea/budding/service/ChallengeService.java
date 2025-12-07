@@ -59,10 +59,13 @@ public class ChallengeService {
 
         participationRepository.save(participation);
 
-        return challengeMapper.toDto(challenge);
+        ChallengeResponseDto dto = challengeMapper.toDto(challenge);
+        dto.setParticipants(1);     // 방금 만든거니까 1로 하드코딩(기술 부채..)
+
+        return dto;
     }
 
-    // 내 챌린지 보기
+    // 내가 진행 중인 챌린지들 확인하기
     @Transactional
     public List<ChallengeResponseDto> getMyChallenges(Long userId, ParticipationStatus status) {
         UserEntity user = userRepository.findById(userId)
@@ -73,7 +76,15 @@ public class ChallengeService {
 
         return participations.stream()
                 .map(ParticipationEntity::getChallenge)
-                .map(challengeMapper::toDto)
+                .distinct()
+                .map(challenge -> {
+                    ChallengeResponseDto dto = challengeMapper.toDto(challenge);
+
+                    long participantCount = participationRepository.countByChallengeId(challenge.getId());
+
+                    dto.setParticipants((int) participantCount);
+                    return dto;
+                })
                 .toList();
     }
 
