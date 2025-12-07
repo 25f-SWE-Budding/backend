@@ -3,22 +3,24 @@ package kr.ac.korea.budding.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
-public class CertificationChallengeResponseDto {
-
-    private Long userId;
+public class CheckInChallengeResponseDto {
 
     private Long challengeId;
 
-    private LocalDateTime createdAt;
+    private Long userId;
+
+    private LocalDate date;
 
     private String imagePath;
 
     private String memo;
+
+    private LocalDateTime createdAt;
 }

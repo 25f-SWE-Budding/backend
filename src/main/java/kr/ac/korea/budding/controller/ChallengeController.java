@@ -25,7 +25,7 @@ public class ChallengeController {
             @PathVariable Long userId,
             @RequestBody ChallengeRequestDto challengeRequestDto
     ) {
-        return challengeService.createChallenge(challengeRequestDto, userId);
+        return challengeService.createChallenge(userId, challengeRequestDto);
     }
 
     @GetMapping("/users/{userId}")
@@ -39,17 +39,17 @@ public class ChallengeController {
     }
 
     @PostMapping(
-            value = "/{challengeId}/users/{userId}/certifications",
+            value = "/{challengeId}/users/{userId}/checkIn",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     @Operation(summary = "인증 사진 업로드")
-    public CertificationChallengeResponseDto certificationChallenge(
+    public CheckInChallengeResponseDto CheckInChallenge(
             @PathVariable Long challengeId,
             @PathVariable Long userId,
             @RequestPart("image") MultipartFile image,
             @RequestParam(value = "memo",  required = false) String memo
     ) {
-        return challengeService.certificationChallenge(userId, challengeId, image, memo);
+        return challengeService.checkInChallenge(challengeId, userId, image, memo);
     }
 
     @GetMapping(
@@ -73,13 +73,24 @@ public class ChallengeController {
     }
 
     @GetMapping(
-            value = "/users/{userId}/challenges/{challengeId}"
+            value = "/{challengeId}/users/{userId}"
     )
     @Operation(summary = "유저의 챌린지 1개 상세보기")
     public ChallengeDetailResponseDto getChallengeDetailByUser(
-            @PathVariable Long userId,
-            @PathVariable Long challengeId
+            @PathVariable Long challengeId,
+            @PathVariable Long userId
     ) {
-        return challengeService.getChallengeDetailByUser(userId, challengeId);
+        return challengeService.getChallengeDetailByUser(challengeId, userId);
+    }
+
+    @PostMapping(
+            value = "/{challengeId}/users/{userId}"
+    )
+    @Operation(summary = "유저가 챌린지에 참여")
+    public ChallengeResponseDto participateChallenge(
+            @PathVariable Long challengeId,
+            @PathVariable Long userId
+    ) {
+        return challengeService.participateChallenge(challengeId, userId);
     }
 }

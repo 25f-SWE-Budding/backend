@@ -1,12 +1,10 @@
 package kr.ac.korea.budding.service;
 
 import kr.ac.korea.budding.dto.*;
+import kr.ac.korea.budding.entity.*;
+import kr.ac.korea.budding.mapper.CheckInChallengeMapper;
 import kr.ac.korea.budding.repository.*;
 import org.springframework.transaction.annotation.Transactional;
-import kr.ac.korea.budding.entity.CertificationChallengeEntity;
-import kr.ac.korea.budding.entity.ChallengeEntity;
-import kr.ac.korea.budding.entity.ParticipationEntity;
-import kr.ac.korea.budding.entity.UserEntity;
 import kr.ac.korea.budding.enums.ParticipationStatus;
 import kr.ac.korea.budding.mapper.CertificationChallengeMapper;
 import kr.ac.korea.budding.mapper.ChallengeMapper;
@@ -29,6 +27,7 @@ public class ChallengeService {
     private final ParticipationRepository participationRepository;
     private final UserRepository userRepository;
     private final ChallengeCheckInRepository challengeCheckInRepository;
+    private final CheckInChallengeMapper checkInChallengeMapper;
 
     private final CertificationChallengeRepository certificationChallengeRepository;
     private final SupabaseStorageUtil supabaseStorageUtil;
@@ -36,7 +35,7 @@ public class ChallengeService {
 
     // 챌린지 만들기
     @Transactional
-    public ChallengeResponseDto createChallenge(ChallengeRequestDto req, Long userId) {
+    public ChallengeResponseDto createChallenge(Long userId, ChallengeRequestDto req) {
         UserEntity user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException(String.format("user with id: %d not found", userId))
         );
@@ -54,10 +53,7 @@ public class ChallengeService {
 
         participationRepository.save(participation);
 
-        ChallengeResponseDto dto = challengeMapper.toDto(challenge);
-        dto.setParticipants(1);     // 방금 만든거니까 1로 하드코딩(기술 부채..)
-
-        return dto;
+        return challengeMapper.toDto(challenge);
     }
 
     // 내가 진행 중인 챌린지들 확인하기
@@ -72,20 +68,13 @@ public class ChallengeService {
         return participations.stream()
                 .map(ParticipationEntity::getChallenge)
                 .distinct()
-                .map(challenge -> {
-                    ChallengeResponseDto dto = challengeMapper.toDto(challenge);
-
-                    long participantCount = participationRepository.countByChallengeId(challenge.getId());
-
-                    dto.setParticipants((int) participantCount);
-                    return dto;
-                })
+                .map(challengeMapper::toDto)
                 .toList();
     }
 
     // 챌린지에 인증 사진 업로드
     @Transactional
-    public CertificationChallengeResponseDto certificationChallenge(Long userId, Long challengeId, MultipartFile image, String memo) {
+    public CheckInChallengeResponseDto checkInChallenge(Long challengeId, Long userId, MultipartFile image, String memo) {
 
         UserEntity user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException(String.format("user with id: %d not found", userId))
@@ -105,7 +94,7 @@ public class ChallengeService {
 
         String url = supabaseStorageUtil.uploadFileToBucket(image, path);
 
-        CertificationChallengeEntity certification = CertificationChallengeEntity.builder()
+        ChallengeCheckInEntity checkIn = ChallengeCheckInEntity.builder()
                 .user(user)
                 .challenge(challenge)
                 .createdAt(LocalDateTime.now())
@@ -113,9 +102,9 @@ public class ChallengeService {
                 .memo(memo)
                 .build();
 
-        certificationChallengeRepository.save(certification);
+        challengeCheckInRepository.save(checkIn);
 
-        return certificationChallengeMapper.toDto(certification);
+        return checkInChallengeMapper.toDto(checkIn);
     }
 
     // 챌린지의 인원 수 확인
@@ -183,6 +172,7 @@ public class ChallengeService {
                 .startDate(start)
                 .endDate(end)
                 .rewardName(challenge.getRewardName())
+                .rewardUrl(challenge.getRewardUrl())
                 .participants(participants)
                 .succeedDays(succeedDays)
                 .leftDays(leftDays)
@@ -191,4 +181,26 @@ public class ChallengeService {
                 .build();
 
     }
+
+    // 챌린지 참여하기
+    @Transactional
+    public ChallengeResponseDto participateChallenge(Long challengeId, Long userId) {
+        ChallengeEntity challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new RuntimeException("Challenge not found: " + challengeId));
+
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("user not found: " + userId));
+
+        ParticipationEntity p = ParticipationEntity.builder()
+                .user(user)
+                .challenge(challenge)
+                .joinedAt(LocalDateTime.now())
+                .status(ParticipationStatus.ACTIVE)
+                .build();
+
+        participationRepository.save(p);
+
+        return challengeMapper.toDto(challenge);
+    }
+
 }

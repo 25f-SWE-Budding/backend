@@ -25,6 +25,8 @@ public class ChallengeEntity {
     @Column(nullable = false)
     private String category;
 
+    private String goal;    // 챌린지 목표 설명
+
     @Column(nullable = false)
     private LocalDate startDate;
 
@@ -35,10 +37,7 @@ public class ChallengeEntity {
     private Long targetCount;    // 전체 횟수
 
     private String rewardName;
-
     private String rewardUrl;
-
-    private String goal;    // 챌린지 목표 설명
 
     private String notion;  // 메모
 }

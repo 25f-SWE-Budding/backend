@@ -1,6 +1,7 @@
 package kr.ac.korea.budding.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +13,11 @@ import java.time.LocalDateTime;
                         columnNames = {"challenge_id", "user_id", "date"}
                 )
         })
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class ChallengeCheckInEntity {
 
     @Id
@@ -32,8 +38,10 @@ public class ChallengeCheckInEntity {
     @Column(nullable = false)
     private LocalDate date;
 
-    // 선택: 인증 이미지나 메모가 필요하면
-    private String proofImageUrl;
+    // 인증 이미지
+    private String imagePath;
+
+    // 메모
     private String memo;
 
     private LocalDateTime createdAt;

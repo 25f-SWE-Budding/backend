@@ -13,11 +13,15 @@ public class ChallengeResponseDto {
     private Long id;
     private String name;
     private String category;
+    private String goal;
+
     private Date startDate;
     private Date endDate;
-//    private Integer targetCount;
-//    private Integer currentCertCount;
+
+    private Integer targetCount;
+
     private String rewardName;
     private String rewardUrl;
-    private Integer participants;
+
+    private String notion;
 }

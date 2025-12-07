@@ -13,15 +13,16 @@ public class ChallengeDetailResponseDto {
     private Long id;
     private String name;
     private String category;
+    private String goal;         // 챌린지 목표 설명
 
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private String rewardName;   // 기존 필드
-    private String goal;         // 챌린지 목표 설명
-
     private long succeedDays;
     private long leftDays;
+
+    private String rewardName;
+    private String rewardUrl;
 
     private String notion;       // 메모
 
