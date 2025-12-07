@@ -15,10 +15,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SupabaseStorageUtil {
 
-    @Value("${supabase.url}")
+    @Value("${SUPABASE_URL}")
     private String supabaseUrl;
 
-    @Value("${supabase.key}")
+    @Value("${SUPABASE_KEY}")
     private String supabaseKey;
 
     private final WebClient webClient = WebClient.builder().build();

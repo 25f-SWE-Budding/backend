@@ -20,7 +20,5 @@ public class UserResponseDto {
 
     private Integer point;
 
-    private Boolean dailyCheckInStatus;
-
     private Long avatarId;
 }

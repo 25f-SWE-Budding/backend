@@ -90,19 +90,22 @@ public class ChallengeService {
 
         String date = LocalDate.now().toString();
         String uuid = UUID.randomUUID().toString();
-        String path = String.format("user-%d/challenge-%d/%s/%s", user.getId(), challenge.getId(), date, uuid);
+        String bucketName = "checkIn-challenge";
+        String imagePath = String.format("%s/user-%d/challenge-%d/%s/%s", bucketName, user.getId(), challenge.getId(), date, uuid);
 
-        String url = supabaseStorageUtil.uploadFileToBucket(image, path);
 
         ChallengeCheckInEntity checkIn = ChallengeCheckInEntity.builder()
-                .user(user)
                 .challenge(challenge)
-                .createdAt(LocalDateTime.now())
-                .imagePath(url)
+                .user(user)
+                .date(LocalDate.now())
+                .imagePath(imagePath)
                 .memo(memo)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         challengeCheckInRepository.save(checkIn);
+
+        supabaseStorageUtil.uploadFileToBucket(image, imagePath);
 
         return checkInChallengeMapper.toDto(checkIn);
     }

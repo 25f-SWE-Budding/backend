@@ -32,7 +32,7 @@ public class CheckInService {
         // 이미 출석했는지 확인
         CheckInEntity ch = checkInRepository.findByUserIdAndDate(userId, date);
 
-        if (ch == null) {
+        if (ch == null || ch.getStatus() == false) {
             CheckInEntity checkIn = CheckInEntity.builder()
                     .user(user)
                     .date(date)
